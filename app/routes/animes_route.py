@@ -9,3 +9,7 @@ bp.get('')(animes_controller.animes)
 bp.get('/<int:anime_id>')(animes_controller.select_by_id)
 
 bp.post('')(animes_controller.create)
+
+bp.patch('/<int:anime_id>')(animes_controller.update)
+
+bp.delete('/<int:anime_id>')(animes_controller.delete)
