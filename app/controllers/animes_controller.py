@@ -12,6 +12,12 @@ def animes():
 
 def select_by_id(anime_id):
     try:
+        existing_ids = []
+        for anms in animes()[0].get("data"):
+            existing_ids.append(anms.get("id"))
+        if anime_id not in existing_ids:
+            raise TypeError
+            
         anime = Anime.anime_by_id(anime_id)
 
         anime = Anime.serialize_anime(anime)
