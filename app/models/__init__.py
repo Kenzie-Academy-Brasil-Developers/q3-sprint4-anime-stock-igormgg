@@ -1,5 +1,6 @@
 from os import getenv
 import psycopg2
+from psycopg2 import sql
 
 configs = {
     "host": getenv("DB_HOST"),
@@ -32,3 +33,26 @@ class DatabaseConnector:
         cls.conn.commit()
         cls.cur.close()
         cls.conn.close()
+    
+    @classmethod
+    def get_column_names(cls, table_name: str):
+        cls.get_conn_cur()
+
+        query = sql.SQL(
+            """
+            SELECT
+                column_name
+            FROM
+                information_schema.COLUMNS
+            WHERE table_name = {table_name}
+            ORDER BY ordinal_position;
+            """
+        ).format(table_name=sql.Literal(table_name))
+
+        cls.cur.execute(query)
+
+        column_names = cls.cur.fetchall()
+
+        cls.commit_and_close()
+
+        return [row[0] for row in column_names]

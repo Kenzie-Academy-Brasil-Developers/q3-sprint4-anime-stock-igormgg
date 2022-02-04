@@ -4,7 +4,7 @@ from app.models import DatabaseConnector
 
 class Anime(DatabaseConnector):
     available_keys = ['anime', 'released_date', 'seasons']
-    anime_keys = ['id', 'anime', 'released_date', 'seasons']
+    anime_keys = DatabaseConnector.get_column_names('animes')
 
     def __init__(self, *args, **kwargs):
         self.anime = kwargs['anime']
